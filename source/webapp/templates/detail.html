@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Детальный просмотр{% endblock %}
+{% block content %}
+    <div class="text-center">
+        <h1>{{ file.caption }}</h1>
+        <div class="row">
+            <div class="col col-12 col-sm-10 col-md-8 col-lg-6 m-auto">
+                <a href="{{ file.file.url }}" class="btn btn-success btn-sm" download="">Скачать</a>
+            </div>
+        </div>
+          <p class="mt-4"><b>Подпись:</b> {{ file.caption }}</p>
+          <p class="mt-2"><b>Дата и время создания:</b> {{ file.created_at }}</p>
+        <a href="{% url 'webapp:file_update' file.pk %}"
+           class="btn btn-primary mt-2">Изменить</a>
+        <a href="{% url 'webapp:file_delete' file.pk %}"
+           class="btn btn-primary mt-2">Удалить</a>
+    </div>
+{% endblock %}

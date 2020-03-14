@@ -1,1 +1,30 @@
 {% extends 'base.html' %}
+{% block title %}Фотографии{% endblock %}
+{% block menu %}
+    <li class="nav-item"><a href="{% url 'webapp:file_create' %}" class="nav-link">Добавить файл</a></li>
+{% endblock %}
+{% block content %}
+    <h1 class="text-center">Файлы</h1>
+    {% include 'partial/simple_search.html' %}
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
+    <div class="row">
+        {% for file in file_list %}
+            <div class="col col-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'webapp:file_detail' file.pk %}"> {{ file.caption }}</a></h5>
+                        <p class="card-text"><a href="{% if file.author.pk %} {% url 'accounts:detail' file.author.pk %}{% endif %}">{{ file.author|default_if_none:"Аноним" }}</a></p>
+                        <p class="card-text">{{ file.created_at }}</p>
+                        <a href="{{ file.file.url }}" class="btn btn-success btn-sm" download="">Скачать</a>
+                        <a href="{% url 'webapp:file_update' file.pk %}"
+                           class="btn btn-primary btn-sm mt-1">Изменить</a>
+                         <a href="{% url 'webapp:file_delete' file.pk %}"
+                           class="btn btn-primary btn-sm mt-1">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

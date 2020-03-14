@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Удалить файл{% endblock %}
+{% block content %}
+        <h1 class="text-center my-3">Удалить файл</h1>
+        <p class="text-center">Вы уверены, что хотите удалить файл {{ file }}?</p>
+        <form action="{% url 'webapp:file_delete' file.pk %}" method="POST" class="text-center">
+            {% csrf_token %}
+            <input type="submit" value="Да" class="btn btn-danger">
+            <a href="{% url "webapp:index" %}" class="btn btn-dark ml-3">Нет</a>
+        </form>
+{% endblock %}
