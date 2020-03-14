@@ -1,0 +1,98 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$YnQjZYHKEhtG$u07k7k2PMbOImLlwBQKWGPhPwtwM2m4Ed3dh7Yww0I0=",
+    "last_login": "2020-03-14T04:05:22.223Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2020-03-13T07:06:42.302Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$wkYPf6N8SpUZ$EsXfk9HD+Qzb+iwyUJo6Q2T8zTyrOjMrlyvg6iGdwok=",
+    "last_login": "2020-03-13T08:16:11.057Z",
+    "is_superuser": false,
+    "username": "user1",
+    "first_name": "user_1",
+    "last_name": "test",
+    "email": "test@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2020-03-13T08:16:02.556Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "webapp.file",
+  "pk": 1,
+  "fields": {
+    "file": "files/vall-i.jpg",
+    "caption": "sqew",
+    "created_at": "2020-03-14T04:14:57.423Z",
+    "author": 1
+  }
+},
+{
+  "model": "webapp.file",
+  "pk": 2,
+  "fields": {
+    "file": "files/471269553.jpg",
+    "caption": "test 2",
+    "created_at": "2020-03-14T04:15:54.783Z",
+    "author": 1
+  }
+},
+{
+  "model": "webapp.file",
+  "pk": 3,
+  "fields": {
+    "file": "files/606822074.jpg",
+    "caption": "test",
+    "created_at": "2020-03-14T04:16:19.190Z",
+    "author": 2
+  }
+},
+{
+  "model": "webapp.file",
+  "pk": 4,
+  "fields": {
+    "file": "files/449356-nike-wallpaper-just-do-it-3600x2160-windows-10.jpg",
+    "caption": "test 3",
+    "created_at": "2020-03-14T04:17:06.819Z",
+    "author": 2
+  }
+},
+{
+  "model": "webapp.file",
+  "pk": 5,
+  "fields": {
+    "file": "files/futbolnij-myach-nike-club-team-2016-jpg.jpg",
+    "caption": "test 4",
+    "created_at": "2020-03-14T04:17:41.219Z",
+    "author": 1
+  }
+},
+{
+  "model": "webapp.file",
+  "pk": 6,
+  "fields": {
+    "file": "files/25-253596_nike-just-do-it-wallpaper-cristiano-ronaldo-wallpaper.jpg",
+    "caption": "test 5",
+    "created_at": "2020-03-14T04:18:06.396Z",
+    "author": 1
+  }
+}
+]
