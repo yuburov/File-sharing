@@ -56,7 +56,8 @@ class FileView(UserPassesTestMixin, DetailView):
         object = self.get_object()
         user = self.request.user
         if object.general_access == PRIVATE and user in object.private_users.all()\
-                or object.author == user or object.general_access == GENERAL:
+                or object.author == user or object.general_access == GENERAL\
+                or self.request.user.has_perm('webapp.view_file'):
             return True
 
 class FileCreateView(CreateView):
