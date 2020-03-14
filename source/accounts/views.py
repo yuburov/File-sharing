@@ -20,7 +20,7 @@ class UserDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        files = context['user_obj'].files.order_by('-created_date')
+        files = context['user_obj'].files.order_by('-created_at')
         self.paginate_files_to_context(files, context)
         return context
 

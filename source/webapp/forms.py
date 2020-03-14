@@ -9,4 +9,9 @@ class SimpleSearchForm(forms.Form):
 class FileForm(forms.ModelForm):
     class Meta:
         model = File
-        exclude = ['author']
+        exclude = ['author', 'private_users']
+
+class CreateFileForm(forms.ModelForm):
+    class Meta:
+        model = File
+        exclude = ['author', 'private_users', 'general_access']

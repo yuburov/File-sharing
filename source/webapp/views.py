@@ -1,13 +1,11 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
-from webapp.forms import SimpleSearchForm, FileForm
-from webapp.models import File
+from webapp.forms import SimpleSearchForm, FileForm, CreateFileForm
+from webapp.models import File, GENERAL, PRIVATE
 
 
 class IndexView(ListView):
@@ -16,7 +14,6 @@ class IndexView(ListView):
     ordering = ['-created_at']
     paginate_by = 10
     paginate_orphans = 1
-
 
     def get(self, request, *args, **kwargs):
         self.form = self.get_search_form()
@@ -35,9 +32,11 @@ class IndexView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.search_value:
-            query = Q(caption__icontains=self.search_value)
+            query = Q(caption__icontains=self.search_value, general_access='general')
             queryset = queryset.filter(query)
-        return queryset
+            return queryset
+        else:
+            return queryset.filter(general_access='general')
 
 
     def get_search_form(self):
@@ -49,15 +48,27 @@ class IndexView(ListView):
             return self.form.cleaned_data['search']
         return None
 
-class FileView(DetailView):
+class FileView(UserPassesTestMixin, DetailView):
     model = File
     template_name = 'detail.html'
 
+    def test_func(self):
+        object = self.get_object()
+        user = self.request.user
+        if object.general_access == PRIVATE and user in object.private_users.all()\
+                or object.author == user or object.general_access == GENERAL:
+            return True
 
 class FileCreateView(CreateView):
     model = File
     template_name = 'create.html'
     form_class = FileForm
+
+    def get_form_class(self):
+        if self.request.user.is_authenticated:
+            return FileForm
+        else:
+            return CreateFileForm
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
