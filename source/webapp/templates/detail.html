@@ -11,9 +11,13 @@
         </div>
           <p class="mt-4"><b>Подпись:</b> {{ file.caption }}</p>
           <p class="mt-2"><b>Дата и время создания:</b> {{ file.created_at }}</p>
+        {% if perms.webapp.change_file %}
         <a href="{% url 'webapp:file_update' file.pk %}"
            class="btn btn-primary mt-2">Изменить</a>
+        {% endif %}
+        {% if perms.webapp.delete_file %}
         <a href="{% url 'webapp:file_delete' file.pk %}"
            class="btn btn-primary mt-2">Удалить</a>
+        {% endif %}
     </div>
 {% endblock %}

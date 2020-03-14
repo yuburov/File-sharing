@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect
@@ -52,22 +53,6 @@ class FileView(DetailView):
     model = File
     template_name = 'detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        files = context['user_obj'].file.order_by('-created_date')
-        self.paginate_files_to_context(files, context)
-        return context
-
-    def paginate_files_to_context(self, files, context):
-        paginator = Paginator(files, 2, 0)
-        page_number = self.request.GET.get('page', 1)
-        page = paginator.get_page(page_number)
-        context['paginator'] = paginator
-        context['page_obj'] = page
-        context['files'] = page.object_list
-        context['is_paginated'] = page.has_other_pages()
-
 
 class FileCreateView(CreateView):
     model = File
@@ -84,17 +69,31 @@ class FileCreateView(CreateView):
     def get_success_url(self):
         return reverse('webapp:index')
 
-class FileUpdateView(UpdateView):
+class FileUpdateView(UserPassesTestMixin, UpdateView):
     model = File
     form_class = FileForm
     context_object_name = 'file'
     template_name = 'update.html'
+    permission_required = 'webapp.change_file'
+    permission_denied_message = 'Доступ ограничен'
+
+    def test_func(self):
+        file = self.get_object()
+        return self.request.user == file.author or self.request.user.is_superuser \
+               or self.request.user.has_perm('webapp.change_file')
 
     def get_success_url(self):
         return reverse('webapp:file_detail', kwargs={'pk': self.object.pk})
 
-class FileDeleteView(DeleteView):
+class FileDeleteView(UserPassesTestMixin, DeleteView):
     model = File
     context_object_name = 'file'
     template_name = 'delete.html'
     success_url = reverse_lazy('webapp:index')
+    permission_required = 'webapp.delete_file'
+    permission_denied_message = 'Доступ ограничен'
+
+    def test_func(self):
+        photo = self.get_object()
+        return self.request.user == photo.author or self.request.user.is_superuser \
+               or self.request.user.has_perm('webapp.delete_file')
