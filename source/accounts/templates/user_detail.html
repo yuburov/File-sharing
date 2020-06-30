@@ -29,10 +29,14 @@
                                 </p>
                                 <p class="card-text">{{ file.created_at }}</p>
                                 <a href="{{ file.file.url }}" class="btn btn-success btn-sm mt-1" download="">Скачать</a>
+                             {% if perms.webapp.change_file %}
                                 <a href="{% url 'webapp:file_update' file.pk %}"
                                    class="btn btn-primary btn-sm mt-1">Изменить</a>
+                             {% endif %}
+                             {% if perms.webapp.delete_file %}
                                 <a href="{% url 'webapp:file_delete' file.pk %}"
                                    class="btn btn-primary btn-sm mt-1">Удалить</a>
+                             {% endif %}
                             </div>
                         </div>
                         {% endif %}

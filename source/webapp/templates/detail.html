@@ -20,4 +20,44 @@
            class="btn btn-danger mt-2">Удалить</a>
         {% endif %}
     </div>
+     {% if file.general_access == 'general' %}
+                <h6>Файл в общем доступе</h6>
+            {% elif file.general_access == 'hidden'%}
+                <h6>Файл скрыт</h6>
+            {% else %}
+                <button class="btn btn-dark" style="margin-left: 485px; margin-top: 10px" id='collapseAccessButton' data-file-id='{{ file.pk }}' type="button" data-toggle="collapse" data-target="#collapseAccess" aria-expanded="false" aria-controls="collapseExample">
+                    Доступ к файлу
+                </button>
+                <div class="collapse" id="collapseAccess">
+                    <div class="card card-body" id="privileged_users">
+                        {% if file.private_users %}
+                            {% for user in  file.private_users.all %}
+                                <div class="btn-group btn-group-sm w-50">
+                                    <a class='btn btn-info' href="{% url 'accounts:detail' user.id %}"><i class="far fa-eye"></i> {{ user.username }}</a>
+                                    <button id="depriveButton_{{ user.id }}" class="btn btn-danger depriveAccess" data-id="{{ user.id }}"><i class="fas fa-user-slash"></i> Забрать права</button>
+                                </div>
+                            {% endfor %}
+                        {% else  %}
+                            <h6 id="accessNone">Пользователь никому не доверяет</h6>
+                        {% endif %}
+                        <form id="formAddAccessToUser" class="pt-5">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Введите имя пользователя</span>
+                                </div>
+                                <input type="text" maxlength="150" aria-label="username" class="form-control" name="user_name" id="id_user_name">
+                                <input type="submit" class="btn btn-success" value="Дать доступ" id="provideAccessSubmit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}

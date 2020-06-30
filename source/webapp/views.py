@@ -5,7 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from webapp.forms import SimpleSearchForm, FileForm, CreateFileForm
-from webapp.models import File, GENERAL, PRIVATE
+from webapp.models import File, GENERAL, PRIVATE, HIDDEN
 
 
 class IndexView(ListView):
@@ -56,7 +56,8 @@ class FileView(UserPassesTestMixin, DetailView):
         object = self.get_object()
         user = self.request.user
         if object.general_access == PRIVATE and user in object.private_users.all()\
-                or object.author == user or object.general_access == GENERAL\
+                or object.author == user or object.general_access == GENERAL \
+                or object.general_access == HIDDEN \
                 or self.request.user.has_perm('webapp.view_file'):
             return True
 
